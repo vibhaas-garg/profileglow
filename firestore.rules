@@ -1,0 +1,75 @@
+rules_version = '2';
+
+/**
+ * ProfileGlow Cloud Firestore Security Rules
+ * 
+ * Data Architecture:
+ * 1. /users/{userId} - Private user account data (read/write only by owner)
+ * 2. /users/{userId}/reports/{reportId} - User's private report archive
+ * 3. /reports/{reportId} - Shareable dating profile makeover reports:
+ *    - Public read (to allow sharing report links with friends)
+ *    - Client update protected: 'isChatUnlocked', 'paymentId', and 'unlockedAt'
+ *      cannot be tampered with from client SDK (requires server/admin verification)
+ * 4. /reports/{reportId}/messages/{messageId} - AI coaching chat history
+ */
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isReportOwner(reportData) {
+      return (isAuthenticated() && request.auth.uid == reportData.userId) || 
+             reportData.userId == 'guest_user';
+    }
+
+    // --- Users Collection ---
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+
+      // User's private subcollections (e.g. saved reports)
+      match /reports/{reportId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // --- Global Reports Collection (for public sharing & report view) ---
+    match /reports/{reportId} {
+      // Allow anyone with the report ID link to view the report
+      allow read: if true;
+
+      // Allow creating reports (either authenticated user or guest)
+      allow create: if request.resource.data.id == reportId &&
+                       request.resource.data.overallScore is number &&
+                       request.resource.data.isChatUnlocked == false;
+
+      // Allow updates by owner or guest, but block tampering with payment flags
+      allow update: if isReportOwner(resource.data) &&
+                       !request.resource.data.diff(resource.data).affectedKeys().hasAny(['isChatUnlocked', 'paymentId', 'unlockedAt']);
+
+      // Disallow client deletions (or restrict to owner)
+      allow delete: if isOwner(resource.data.userId);
+
+      // Coaching Chat Subcollection
+      match /messages/{messageId} {
+        allow read: if isReportOwner(get(/databases/$(database)/documents/reports/$(reportId)).data);
+        allow create: if isReportOwner(get(/databases/$(database)/documents/reports/$(reportId)).data) &&
+                         request.resource.data.role in ['user', 'assistant'] &&
+                         request.resource.data.content is string;
+        allow update, delete: if false;
+      }
+    }
+
+    // Default catch-all: deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
