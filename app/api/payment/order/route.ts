@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
       orderId,
       amount,
       currency,
-      keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_mock_key_id",
+      keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "",
     });
   } catch (err: any) {
     console.error("Payment order error:", err);

@@ -71,8 +71,7 @@ export default function PrivacyPage() {
               </li>
               <li>
                 <strong>Usage & Analytics:</strong> Aggregate browser, device, and interaction
-                analytics via Google Analytics (Measurement ID: G-KGW87C9PCH) to improve service
-                performance.
+                analytics via Google Analytics to improve service performance.
               </li>
             </ul>
           </section>
