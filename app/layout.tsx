@@ -12,15 +12,18 @@ const inter = Inter({
 const GA_ID = process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "G-KGW87C9PCH";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://profileglow.com"),
+  metadataBase: new URL("https://profileglow.tech"),
   title: "ProfileGlow: Dating Profile Optimization",
   description:
     "Upload your dating profile photos and bio to get a complete makeover report with rewritten bios, photo rankings, and conversation openers.",
+  verification: {
+    google: "GcBRaC6lh3pDGXBrzPzfvaarwG36lHIy94WnH",
+  },
   openGraph: {
     title: "ProfileGlow: AI Dating Profile Doctor",
     description:
       "Get an evidence-based audit for Hinge, Bumble, and Tinder. Photo critiques, bio rewrites, and conversation openers.",
-    url: "https://profileglow.com",
+    url: "https://profileglow.tech",
     siteName: "ProfileGlow",
     images: [
       {
