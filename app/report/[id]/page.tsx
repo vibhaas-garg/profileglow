@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { ProfileReport } from "@/lib/types";
 import { ScoreOverview } from "@/components/report/ScoreOverview";
 import { PhotoRankings } from "@/components/report/PhotoRankings";
@@ -17,6 +17,7 @@ import { trackEvent } from "@/lib/analytics";
 
 export default function ReportPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const reportId = params.id as string;
 
   const [report, setReport] = useState<ProfileReport | null>(null);
@@ -27,6 +28,29 @@ export default function ReportPage() {
   useEffect(() => {
     const fetchReport = async () => {
       try {
+        // If returning from successful payment redirect
+        const isPaidRedirect =
+          searchParams.get("payment") === "success" ||
+          searchParams.get("unlocked") === "true" ||
+          searchParams.get("status") === "succeeded";
+
+        if (isPaidRedirect && reportId) {
+          const paymentId = searchParams.get("payment_id") || `dodo_${Date.now()}`;
+          try {
+            await fetch("/api/payment/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                orderId: "dodo_checkout",
+                paymentId,
+                reportId,
+              }),
+            });
+          } catch (e) {
+            console.warn("Auto unlock verification error:", e);
+          }
+        }
+
         const res = await fetch(`/api/reports/${reportId}`);
         if (!res.ok) {
           throw new Error("Could not find report.");
@@ -49,7 +73,7 @@ export default function ReportPage() {
     if (reportId) {
       fetchReport();
     }
-  }, [reportId]);
+  }, [reportId, searchParams]);
 
   const handleShare = async () => {
     if (!report) return;

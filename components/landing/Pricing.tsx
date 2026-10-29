@@ -1,9 +1,14 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { Check, Lock } from "lucide-react";
+import { useUsdPrice } from "@/lib/useCurrency";
 
 export const Pricing: React.FC = () => {
+  const { usdEquivalent } = useUsdPrice(249);
+
   return (
     <section id="pricing" className="w-full bg-[#ebe8e0] py-20 border-t border-line">
       <div className="max-w-6xl mx-auto px-4">
@@ -79,10 +84,10 @@ export const Pricing: React.FC = () => {
             </div>
             <div>
               <h3 className="font-black text-2xl text-ink">Coaching Chat Unlock</h3>
-              <div className="my-4 flex items-baseline gap-2">
-                <span className="text-5xl font-black tracking-tight text-ink">$4</span>
+              <div className="my-4 flex items-baseline gap-2 flex-wrap">
+                <span className="text-5xl font-black tracking-tight text-ink">₹249</span>
                 <span className="text-base font-bold text-ink tracking-normal">
-                  / one-time (₹349)
+                  (~${usdEquivalent} USD) / one-time
                 </span>
               </div>
               <p className="text-sm font-medium text-ink/80 mb-6">
@@ -115,7 +120,7 @@ export const Pricing: React.FC = () => {
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-ink stroke-[3] shrink-0" />
-                  <span>Instant activation via Razorpay UPI and Cards</span>
+                  <span>Instant activation via UPI, Cards, and Netbanking</span>
                 </li>
               </ul>
             </div>

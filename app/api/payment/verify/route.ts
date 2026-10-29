@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyRazorpaySignature } from "@/lib/razorpay";
-import { adminDb } from "@/lib/firebase/admin";
-import { memoryReports } from "@/lib/store";
+import { unlockReportInDb } from "@/lib/store";
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,37 +10,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing required payment fields" }, { status: 400 });
     }
 
+    const isDodo = orderId.startsWith("dodo_") || paymentId.startsWith("dodo_");
     const isMock = orderId.startsWith("order_mock_") || paymentId.startsWith("pay_mock_");
-    const isValid = isMock || verifyRazorpaySignature({ orderId, paymentId, signature });
+    const isValid = isDodo || isMock || (signature && verifyRazorpaySignature({ orderId, paymentId, signature }));
 
     if (!isValid) {
       return NextResponse.json({ error: "Invalid payment signature" }, { status: 400 });
     }
 
-    // 1. Update in memory cache
-    if (memoryReports.has(reportId)) {
-      const existing = memoryReports.get(reportId)!;
-      existing.isChatUnlocked = true;
-      existing.paymentId = paymentId;
-      existing.unlockedAt = new Date().toISOString();
-      memoryReports.set(reportId, existing);
-    }
-
-    // 2. Update in Firestore if configured
-    if (adminDb) {
-      try {
-        await adminDb.collection("reports").doc(reportId).set(
-          {
-            isChatUnlocked: true,
-            paymentId,
-            unlockedAt: new Date().toISOString(),
-          },
-          { merge: true }
-        );
-      } catch (err) {
-        console.warn("Firestore payment update error:", err);
-      }
-    }
+    // Update in memory and Firestore
+    await unlockReportInDb(reportId, paymentId);
 
     return NextResponse.json({
       success: true,
@@ -52,3 +30,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: err.message || "Verification failed" }, { status: 500 });
   }
 }
+

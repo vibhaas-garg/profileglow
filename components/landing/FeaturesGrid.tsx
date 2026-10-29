@@ -50,7 +50,7 @@ export const FeaturesGrid: React.FC = () => {
       icon: MessagesSquare,
       title: "Interactive Coaching Chat",
       desc: "Ask follow-ups, test custom reply drafts, and get continuous coaching grounded in your profile.",
-      tag: "$4 Unlock",
+      tag: "₹249 Unlock",
       tagVariant: "pink" as const,
     },
   ];

@@ -20,8 +20,8 @@ export const FAQ: React.FC = () => {
       a: "ProfileGlow is optimized for Tinder, Hinge, and Bumble, with support for other dating apps. The recommendations, character counts, and prompt suggestions adapt to each platform's culture.",
     },
     {
-      q: "How does the $4 AI coaching chat work?",
-      a: "Once your free makeover report is generated, you can unlock 30 interactive coaching messages for just $4 (₹349 via Razorpay). You can ask the coach for more bio variations, test out opening lines for specific matches, or get tailored dating advice.",
+      q: "How does the ₹249 AI coaching chat work?",
+      a: "Once your free makeover report is generated, you can unlock 30 interactive coaching messages for just ₹249 (~$2.99 USD) via Dodo Payments. You can pay using UPI, RuPay, Indian & International Cards, or Apple Pay.",
     },
     {
       q: "How fast is the report generated?",

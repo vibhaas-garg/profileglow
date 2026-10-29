@@ -40,7 +40,7 @@ export default function RefundPage() {
             </h2>
             <p className="text-ink/80">
               We want you to love your ProfileGlow makeover. If you purchase our Pro Dating Coach
-              upgrade ($4.00 USD / ₹349 INR) and are not satisfied with your report, photo critiques,
+              upgrade (₹249 INR / ~$2.99 USD equivalent) and are not satisfied with your report, photo critiques,
               or coach advice, we offer a <strong>100% money-back guarantee within 7 days</strong> of
               purchase.
             </p>

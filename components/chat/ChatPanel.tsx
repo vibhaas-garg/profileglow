@@ -7,6 +7,7 @@ import { PaywallModal } from "@/components/chat/PaywallModal";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Loader2, MessageSquare, Camera, X, RotateCcw } from "lucide-react";
+import { useUsdPrice } from "@/lib/useCurrency";
 
 interface ChatPanelProps {
   reportId: string;
@@ -75,6 +76,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   const [sending, setSending] = useState(false);
   const [quotaCount, setQuotaCount] = useState(initialMessageCount);
   const [showPaywall, setShowPaywall] = useState(false);
+  const { usdEquivalent } = useUsdPrice(249);
 
   const messageListRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -280,7 +282,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
               Unlock Your Personal Dating Coach
             </h3>
             <p className="text-xs font-medium text-muted">
-              Get 30 tailored coaching turns with photo analysis, custom reply assistance, and bio polishing for $4 (₹349).
+              Get 30 tailored coaching turns with photo analysis, custom reply assistance, and bio polishing for ₹249 (~${usdEquivalent} USD).
             </p>
           </div>
           <Button
@@ -290,7 +292,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             onClick={() => setShowPaywall(true)}
             className="px-6 py-2.5"
           >
-            Unlock Coaching Chat ($4 / ₹349)
+            Unlock Coaching Chat: ₹249 (~${usdEquivalent} USD)
           </Button>
         </div>
       )}

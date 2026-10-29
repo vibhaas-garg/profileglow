@@ -97,8 +97,8 @@ export default function TermsPage() {
               4. Fees, Payments & Digital Delivery
             </h2>
             <p className="text-ink/80">
-              ProfileGlow offers free initial audits alongside optional paid digital upgrades ($4.00
-              USD or ₹349 INR one-time fee) to unlock complete photo breakdowns, rewritten bios,
+              ProfileGlow offers free initial audits alongside optional paid digital upgrades (₹249 INR
+              / ~$2.99 USD equivalent one-time fee) to unlock complete photo breakdowns, rewritten bios,
               and interactive AI coaching chat.
             </p>
             <p className="text-ink/80">

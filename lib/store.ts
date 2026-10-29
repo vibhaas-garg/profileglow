@@ -1,4 +1,5 @@
 import { ProfileReport } from "./types";
+import { adminDb } from "./firebase/admin";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -17,3 +18,31 @@ export const memoryChat: Map<
   string,
   Array<{ role: "user" | "assistant"; content: string; image?: string; createdAt: string }>
 > = globalThis.__memoryChat || (globalThis.__memoryChat = new Map());
+
+export async function unlockReportInDb(reportId: string, paymentId: string) {
+  // 1. Update in-memory cache
+  if (memoryReports.has(reportId)) {
+    const existing = memoryReports.get(reportId)!;
+    existing.isChatUnlocked = true;
+    existing.paymentId = paymentId;
+    existing.unlockedAt = new Date().toISOString();
+    memoryReports.set(reportId, existing);
+  }
+
+  // 2. Update Firestore if configured
+  if (adminDb) {
+    try {
+      await adminDb.collection("reports").doc(reportId).set(
+        {
+          isChatUnlocked: true,
+          paymentId,
+          unlockedAt: new Date().toISOString(),
+        },
+        { merge: true }
+      );
+    } catch (err) {
+      console.warn("Firestore payment update error:", err);
+    }
+  }
+}
+
