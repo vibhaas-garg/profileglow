@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import { PhotoUploader } from "@/components/dashboard/PhotoUploader";
@@ -10,13 +10,18 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { DatingApp, GenderPreference, RelationshipGoal, ProfileReport } from "@/lib/types";
 import { db } from "@/lib/firebase/client";
-import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
-import { AlertCircle, Loader2, Folder, Check } from "lucide-react";
+import { collection, query, getDocs, orderBy } from "firebase/firestore";
+import { AlertCircle, Loader2, Folder, Check, ArrowRight } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
-export default function DashboardPage() {
+function DashboardContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isExplicitNew = searchParams.get("new") === "true" || searchParams.get("new") === "1";
   const { user, userName, signOut, loading: authLoading, getIdToken } = useAuth();
+
+  // Redirect / checking state
+  const [checkingExisting, setCheckingExisting] = useState(!isExplicitNew);
 
   // Form State
   const [app, setApp] = useState<DatingApp>("hinge");
@@ -41,6 +46,99 @@ export default function DashboardPage() {
     }
   }, [user, authLoading, router]);
 
+  // 1. Auto-check if user already has an existing report
+  useEffect(() => {
+    if (isExplicitNew) {
+      setCheckingExisting(false);
+      return;
+    }
+
+    // Check localStorage first for instant redirect
+    if (typeof window !== "undefined") {
+      const savedReport =
+        (user ? localStorage.getItem(`profileglow_report_${user.uid}`) : null) ||
+        localStorage.getItem("profileglow_latest_report");
+
+      if (savedReport) {
+        router.replace(`/report/${savedReport}`);
+        return;
+      }
+    }
+
+    // If logged in, also check backend for user's reports
+    if (user) {
+      const checkServer = async () => {
+        try {
+          const token = await getIdToken();
+          const res = await fetch("/api/user/latest-report", {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.reportId) {
+              if (typeof window !== "undefined") {
+                localStorage.setItem(`profileglow_report_${user.uid}`, data.reportId);
+                localStorage.setItem("profileglow_latest_report", data.reportId);
+              }
+              router.replace(`/report/${data.reportId}`);
+              return;
+            }
+          }
+        } catch (err) {
+          console.warn("Check latest report error:", err);
+        } finally {
+          setCheckingExisting(false);
+        }
+      };
+
+      checkServer();
+    } else if (!authLoading) {
+      setCheckingExisting(false);
+    }
+  }, [user, authLoading, isExplicitNew, router, getIdToken]);
+
+  // 2. Restore user draft if they navigated away while filling details
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const draft = localStorage.getItem("profileglow_form_draft");
+        if (draft) {
+          const parsed = JSON.parse(draft);
+          if (parsed.app) setApp(parsed.app);
+          if (parsed.bio) setBio(parsed.bio);
+          if (parsed.age) setAge(parsed.age);
+          if (parsed.location) setLocation(parsed.location);
+          if (parsed.genderPreference) setGenderPreference(parsed.genderPreference);
+          if (parsed.relationshipGoal) setRelationshipGoal(parsed.relationshipGoal);
+        }
+      } catch (e) {
+        console.warn("Failed to restore draft:", e);
+      }
+    }
+  }, []);
+
+  // 3. Auto-save form draft so progress is never lost
+  useEffect(() => {
+    if (typeof window !== "undefined" && (bio || location)) {
+      try {
+        localStorage.setItem(
+          "profileglow_form_draft",
+          JSON.stringify({
+            app,
+            bio,
+            age,
+            location,
+            genderPreference,
+            relationshipGoal,
+          })
+        );
+      } catch (e) {
+        // ignore
+      }
+    }
+  }, [app, bio, age, location, genderPreference, relationshipGoal]);
+
+  // Fetch past reports list for display
   useEffect(() => {
     const fetchPastReports = async () => {
       if (!user || !db) return;
@@ -54,6 +152,16 @@ export default function DashboardPage() {
           list.push({ id: doc.id, ...doc.data() } as ProfileReport);
         });
         setPastReports(list);
+
+        // If user already has reports and didn't explicitly request ?new=true, route to latest
+        if (list.length > 0 && !isExplicitNew) {
+          const latestId = list[0].id;
+          if (typeof window !== "undefined") {
+            localStorage.setItem("profileglow_latest_report", latestId);
+            localStorage.setItem(`profileglow_report_${user.uid}`, latestId);
+          }
+          router.replace(`/report/${latestId}`);
+        }
       } catch (err) {
         console.warn("Could not fetch past reports:", err);
       } finally {
@@ -64,7 +172,7 @@ export default function DashboardPage() {
     if (user) {
       fetchPastReports();
     }
-  }, [user]);
+  }, [user, isExplicitNew, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -119,6 +227,16 @@ export default function DashboardPage() {
       }
 
       const data = await res.json();
+
+      // Save report id locally so future logins go straight to it
+      if (typeof window !== "undefined") {
+        localStorage.setItem("profileglow_latest_report", data.reportId);
+        if (user) {
+          localStorage.setItem(`profileglow_report_${user.uid}`, data.reportId);
+        }
+        localStorage.removeItem("profileglow_form_draft");
+      }
+
       router.push(`/report/${data.reportId}`);
     } catch (err: any) {
       console.error(err);
@@ -127,10 +245,25 @@ export default function DashboardPage() {
     }
   };
 
-  if (authLoading) {
+  if (authLoading || (checkingExisting && !isExplicitNew)) {
     return (
-      <div className="min-h-screen bg-bg flex items-center justify-center font-bold text-ink">
-        Loading ProfileGlow...
+      <div className="min-h-screen bg-bg flex flex-col items-center justify-center p-4">
+        <div className="card-brutal p-8 bg-card text-center space-y-4 max-w-sm">
+          <div className="w-12 h-12 rounded-2xl bg-purple border-2 border-ink flex items-center justify-center mx-auto shadow-brutal-sm">
+            <Loader2 className="w-6 h-6 text-white animate-spin" />
+          </div>
+          <h2 className="text-xl font-black text-ink">Retrieving Your Profile Report...</h2>
+          <p className="text-xs font-medium text-muted">
+            Loading your saved makeover audit so you don&apos;t have to re-enter details.
+          </p>
+          <button
+            type="button"
+            onClick={() => setCheckingExisting(false)}
+            className="text-xs font-black text-purple hover:underline pt-2 cursor-pointer"
+          >
+            Or start a new profile analysis →
+          </button>
+        </div>
       </div>
     );
   }
@@ -174,6 +307,24 @@ export default function DashboardPage() {
             </p>
           </div>
         </div>
+
+        {/* Notice if creating a new audit */}
+        {isExplicitNew && (
+          <div className="p-4 bg-purple/10 border-2 border-purple rounded-xl flex items-center justify-between gap-4">
+            <span className="text-xs font-bold text-ink">
+              Creating a fresh profile makeover. Your past reports are saved below.
+            </span>
+            {pastReports.length > 0 && (
+              <Link
+                href={`/report/${pastReports[0].id}`}
+                className="pill-brutal bg-purple text-white text-xs py-1 px-3 shrink-0 flex items-center gap-1"
+              >
+                <span>Latest Report</span>
+                <ArrowRight className="w-3 h-3" />
+              </Link>
+            )}
+          </div>
+        )}
 
         {/* Profile Input Form Card */}
         <form onSubmit={handleSubmit} className="card-brutal p-6 md:p-10 bg-card space-y-8">
@@ -271,5 +422,19 @@ export default function DashboardPage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-bg flex items-center justify-center font-bold text-ink">
+          Loading ProfileGlow...
+        </div>
+      }
+    >
+      <DashboardContent />
+    </Suspense>
   );
 }

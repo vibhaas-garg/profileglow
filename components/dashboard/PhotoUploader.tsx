@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import { Badge } from "@/components/ui/Badge";
-import { AlertCircle, X, Loader2 } from "lucide-react";
+import { AlertCircle, X, Loader2, ShieldCheck } from "lucide-react";
 
 interface PhotoUploaderProps {
   photos: string[];
@@ -45,7 +45,7 @@ async function processAndCompressImage(file: File): Promise<string> {
           return;
         }
 
-        // Draw and compress to 82% quality JPEG (perfect for Gemini vision and instant upload)
+        // Draw and compress to 82% quality JPEG (perfect for Vision AI and instant upload)
         ctx.drawImage(img, 0, 0, width, height);
         const dataUrl = canvas.toDataURL("image/jpeg", 0.82);
         resolve(dataUrl);
@@ -204,6 +204,14 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({ photos, onChange }
             Clear all
           </button>
         )}
+      </div>
+
+      {/* Strict Privacy Guarantee Box */}
+      <div className="p-3.5 bg-card border-2 border-ink rounded-xl shadow-brutal-xs flex items-start gap-2.5">
+        <span className="text-sm font-black text-ink select-none leading-none mt-0.5">*</span>
+        <div className="text-[11px] font-medium text-ink leading-relaxed">
+          <span className="font-black text-ink">Privacy Guarantee:</span> We will not save, store permanently, or use your photos for AI model training or any other purpose. Your images are processed securely in real-time solely to create your makeover report and remain 100% private.
+        </div>
       </div>
 
       <input

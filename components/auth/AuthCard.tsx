@@ -30,10 +30,16 @@ export const AuthCard: React.FC<AuthCardProps> = ({ mode }) => {
     try {
       if (mode === "signup") {
         await signUpWithEmail(name, email, password);
+        router.push("/dashboard");
       } else {
         await signInWithEmail(email, password);
+        const savedReport = typeof window !== "undefined" ? localStorage.getItem("profileglow_latest_report") : null;
+        if (savedReport) {
+          router.push(`/report/${savedReport}`);
+        } else {
+          router.push("/dashboard");
+        }
       }
-      router.push("/dashboard");
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Authentication failed. Please check your credentials.");
@@ -46,7 +52,12 @@ export const AuthCard: React.FC<AuthCardProps> = ({ mode }) => {
     setError(null);
     try {
       await signInWithGoogle();
-      router.push("/dashboard");
+      const savedReport = typeof window !== "undefined" ? localStorage.getItem("profileglow_latest_report") : null;
+      if (savedReport) {
+        router.push(`/report/${savedReport}`);
+      } else {
+        router.push("/dashboard");
+      }
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Google sign in failed.");

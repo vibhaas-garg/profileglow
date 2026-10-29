@@ -335,7 +335,7 @@ export default async function Image({ params }: { params: { id: string } }) {
             <span>profileglow.com</span>
             <span style={{ color: "#7c5cff" }}>•</span>
             <span style={{ color: "#6b675e" }}>
-              Built with Gemini 3.5 Flash Multimodal AI
+              Powered by ProfileGlow Vision AI
             </span>
           </div>
 

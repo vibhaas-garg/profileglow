@@ -118,7 +118,7 @@ export default function TermsPage() {
               5. AI Disclaimer & Limitation of Liability
             </h2>
             <p className="text-ink/80">
-              ProfileGlow leverages artificial intelligence models (Google Gemini) to generate
+              ProfileGlow leverages cutting-edge artificial intelligence vision and language models to generate
               suggestions, estimates, and conversational tips. These recommendations are provided
               solely for educational, entertainment, and optimization purposes.
             </p>

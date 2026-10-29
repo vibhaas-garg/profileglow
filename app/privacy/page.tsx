@@ -87,8 +87,8 @@ export default function PrivacyPage() {
             </p>
             <ul className="list-disc pl-5 space-y-2 text-ink/80">
               <li>
-                Photos are compressed client-side and analyzed using Google Gemini Multimodal AI
-                models through private, enterprise-grade APIs.
+                Photos are compressed client-side and analyzed using secure, enterprise-grade Vision AI
+                models through private, zero-retention APIs. We do not save, store permanently, or use your photos for AI model training or any other purpose.
               </li>
               <li>
                 <strong>No Public Sharing:</strong> Your photos are never shared publicly, never

@@ -11,7 +11,7 @@ export const HowItWorks: React.FC = () => {
     {
       num: "02",
       title: "Multimodal AI analyzes everything",
-      desc: "Gemini 2.0 Flash evaluates your photo lighting, expressions, and order, then audits your bio for originality and red flags.",
+      desc: "ProfileGlow's Advanced Vision AI evaluates your photo lighting, expressions, and order, then audits your bio for originality and red flags.",
     },
     {
       num: "03",

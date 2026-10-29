@@ -9,11 +9,11 @@ export const FAQ: React.FC = () => {
   const faqs = [
     {
       q: "How does the AI analyze my profile photos and bio?",
-      a: "We use Google Gemini 2.0 Flash multimodal vision and language models. The AI evaluates photo lighting, posture, facial expressions, and composition, alongside your written bio to measure originality, vibe, and conversation potential.",
+      a: "We use state-of-the-art multimodal vision and dating intelligence AI models. The AI evaluates photo lighting, posture, facial expressions, and composition, alongside your written bio to measure originality, vibe, and conversation potential.",
     },
     {
       q: "Is my personal data and photo upload private?",
-      a: "Yes, completely. Your photos and profile details are stored securely in your private Firebase storage and Firestore documents. We never sell or share your photos with third parties, and you can delete them anytime.",
+      a: "Yes, 100%. We will never save, store permanently, or use your photos for AI training or any other purpose. Your uploads are processed securely in real-time solely to create your confidential audit and remain completely private.",
     },
     {
       q: "Which dating apps are supported?",
@@ -25,7 +25,7 @@ export const FAQ: React.FC = () => {
     },
     {
       q: "How fast is the report generated?",
-      a: "It takes approximately 10 to 15 seconds. As soon as you upload your photos and click 'Analyze', our Gemini pipeline creates your complete report.",
+      a: "It takes approximately 10 to 15 seconds. As soon as you upload your photos and click 'Analyze', our AI analysis engine creates your complete report.",
     },
   ];
 

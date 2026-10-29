@@ -32,6 +32,9 @@ export async function unlockReportInDb(reportId: string, paymentId: string) {
   // 2. Update Firestore if configured
   if (adminDb) {
     try {
+      const repDoc = await adminDb.collection("reports").doc(reportId).get();
+      const userId = repDoc.exists ? repDoc.data()?.userId : null;
+
       await adminDb.collection("reports").doc(reportId).set(
         {
           isChatUnlocked: true,
@@ -40,6 +43,17 @@ export async function unlockReportInDb(reportId: string, paymentId: string) {
         },
         { merge: true }
       );
+
+      if (userId && userId !== "guest_user") {
+        await adminDb.collection("users").doc(userId).collection("reports").doc(reportId).set(
+          {
+            isChatUnlocked: true,
+            paymentId,
+            unlockedAt: new Date().toISOString(),
+          },
+          { merge: true }
+        );
+      }
     } catch (err) {
       console.warn("Firestore payment update error:", err);
     }
