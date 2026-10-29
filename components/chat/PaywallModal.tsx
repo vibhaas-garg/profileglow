@@ -26,30 +26,11 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleUnlock = async (isTestMode = false) => {
+  const handleUnlock = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      if (isTestMode) {
-        // Fast test unlock for local development
-        const verifyRes = await fetch("/api/payment/verify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            orderId: `order_mock_${Date.now()}`,
-            paymentId: `pay_mock_${Date.now()}`,
-            signature: "mock_signature",
-            reportId,
-          }),
-        });
-
-        if (!verifyRes.ok) throw new Error("Verification failed");
-        onSuccess();
-        onClose();
-        return;
-      }
-
       // 1. Create order with selected currency
       let checkoutUrl: string | null = null;
       try {
@@ -175,7 +156,7 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
             type="button"
             variant="purple"
             size="lg"
-            onClick={() => handleUnlock(false)}
+            onClick={handleUnlock}
             disabled={loading}
             className="w-full text-sm py-3"
           >
@@ -185,14 +166,6 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
               ? `Pay ~$${usdEquivalent} USD via Dodo Payments →`
               : `Pay ₹249 (~$${usdEquivalent} USD) via Dodo Payments →`}
           </Button>
-
-          <button
-            type="button"
-            onClick={() => handleUnlock(true)}
-            className="w-full text-center text-[11px] font-bold text-muted hover:text-purple transition-colors underline pt-1"
-          >
-            Quick Unlock (Developer Test Mode)
-          </button>
         </div>
       </div>
     </div>
