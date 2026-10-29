@@ -67,7 +67,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
     {
       role: "assistant",
       content:
-        "Hey! I've analyzed your photos and bio. What would you like to refine? Ask me to craft custom openers for specific matches, write more prompt ideas, or attach a photo to get feedback on a new outfit or angle.",
+        "**Welcome to your AI Coaching Session!**\n\nI have analyzed your profile report and photo scores. What would you like to tackle first?\n\n- **Craft Match Openers:** Ask me for a witty first message for a specific Hinge prompt or Bumble bio.\n- **Photo Critique:** Attach a selfie or outfit photo using the camera button to get an instant rating and actionable tips.\n- **Bio Customization:** Ask me to rewrite your bio in a witty, bold, or authentic style for your city.",
     },
   ]);
   const [input, setInput] = useState("");

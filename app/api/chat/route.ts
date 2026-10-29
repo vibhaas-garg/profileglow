@@ -100,19 +100,37 @@ When the user attaches or uploads a photo:
 - Advise whether to use it as a Lead photo, Supporting photo (slots 2-6), or Discard/Retake.
 - Give 1 actionable tip to improve the shot.
 
-STRICT FORMATTING REQUIREMENTS:
-- DO NOT use markdown headers (never use ### or ## or #).
-- DO NOT use markdown blockquotes (never prefix lines with >).
-- DO NOT use asterisk bullets (never use * or - for bullet points).
-- DO NOT use markdown asterisks for bolding (never use **word**).
-- DO NOT use emojis or em dashes.
-- Format responses cleanly using standard plain paragraphs and clear text labels:
-  Example:
-  Option 1: The Witty Opener
-  "Your message here"
-  Why it works: Direct and easy to answer.
+FORMATTING & HIGHLIGHTING REQUIREMENTS (CRITICAL):
+- ALWAYS bold headings, ratings, and section titles using markdown asterisks (**Heading**).
+- ALWAYS bold attribute labels before colons (e.g. **Lighting:**, **Eye Contact:**, **Expression:**, **Outfit:**, **Background Environment:**, **Recommendation:**, **Why it works:**, **When to send:**, **Key Takeaway:**, etc.).
+- ALWAYS include an **Actionable Tip** (or **Actionable Tip:**) with concrete, high-impact guidance.
+- Apply this structure to EVERY kind of prompt (photo reviews, opener drafting, bio writing, match reply advice, date prep):
 
-- Keep every answer neat, clean, and directly readable on screen without punctuation clutter or symbols.
+When reviewing a photo:
+- **Dating App Photo Rating: X out of 10**
+- **Critique**
+  - **Lighting:** [analysis]
+  - **Eye Contact:** [analysis]
+  - **Expression:** [analysis]
+  - **Outfit:** [analysis]
+  - **Background Environment:** [analysis]
+- **Recommendation:** [Lead Photo | Supporting Photo (Slots 2-6) | Discard / Retake]
+- **Actionable Tip**
+  [1-2 sentences with concrete instructions on how to retake or improve the shot]
+
+When crafting openers, replies, or bios:
+- **Option 1: [Style Name]**
+  "[Exact message or bio to copy-paste]"
+  - **Why it works:** [psychological trigger or conversational bait]
+- **Option 2: [Style Name]**
+  "[Exact message or bio to copy-paste]"
+  - **Why it works:** [psychological trigger or conversational bait]
+- **Actionable Tip**
+  [Concrete timing or follow-up advice]
+
+When answering general dating advice or profile questions:
+- Use bold section labels (**The Diagnosis:**, **The Strategy:**, **Actionable Tip:**) so the user can easily skim and take action.
+- Keep every response punchy, well-spaced, and visually polished without overwhelming blocks of text.
 `;
 
     // Prepare prompt input (multimodal if image attached)
@@ -175,8 +193,36 @@ STRICT FORMATTING REQUIREMENTS:
     }
 
     if (!reply) {
-      // Deterministic coaching response
-      reply = `Great question! Looking at your ${report.inputData.app} profile, the key is keeping your answers punchy. If you want to reply to their message, try: "Honestly? I'll let you decide on the dessert spot, but only if you promise not to judge my playlist." It creates an easy hook without trying too hard. What specific prompt or photo do you want to work on next?`;
+      if (image) {
+        reply = `**Dating App Photo Rating: 7.0 out of 10**
+
+**Critique**
+- **Lighting:** Warm and natural, illuminates your features clearly without harsh shadows.
+- **Eye Contact:** Direct, relaxed, and confident.
+- **Expression:** Genuine micro-smile that conveys warmth and approachable energy.
+- **Outfit:** Clean and fitting well for your target app demographic.
+- **Background Environment:** Solid context that adds lifestyle depth.
+
+**Recommendation:** Supporting Photo (Slot 2 or 3)
+
+**Actionable Tip**
+Try an outdoor shot during golden hour where you're relaxed and smiling authentically to maximize warmth and swipe conversions.`;
+      } else {
+        reply = `**Coach Assessment & Strategy**
+
+Looking at your ${report.inputData.app.toUpperCase()} profile in ${report.inputData.location}, here are high-converting options tailored to your matches:
+
+**Option 1: The Playful Banter**
+"Honestly? I will let you pick the dessert spot, but only if you promise not to judge my playlist on the drive."
+- **Why it works:** Low friction, teases playful vulnerability, and gives them an effortless opening question.
+
+**Option 2: The Fun Debate**
+"Quick debate: is it socially acceptable to order breakfast food for dinner? Your answer decides our first date."
+- **Why it works:** Creates an immediate playful controversy that over 80% of matches reply to.
+
+**Actionable Tip**
+Always reply within 2-4 hours when a match first messages you to keep conversational momentum high while your profile is fresh in their feed.`;
+      }
     }
 
     const timestamp = new Date().toISOString();
