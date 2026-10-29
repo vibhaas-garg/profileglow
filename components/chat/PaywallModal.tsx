@@ -51,57 +51,34 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
       }
 
       // 1. Create order with selected currency
-      const orderRes = await fetch("/api/payment/order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ reportId, currency }),
-      });
+      let checkoutUrl: string | null = null;
+      try {
+        const orderRes = await fetch("/api/payment/order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ reportId, currency }),
+        });
 
-      if (!orderRes.ok) throw new Error("Could not initialize order");
-      const orderData = await orderRes.json();
-
-      // If Dodo Payments checkout session was created, redirect directly
-      if (orderData.provider === "dodo" && orderData.checkoutUrl) {
-        window.location.href = orderData.checkoutUrl;
-        return;
+        if (orderRes.ok) {
+          const orderData = await orderRes.json();
+          if (orderData.provider === "dodo" && orderData.checkoutUrl) {
+            checkoutUrl = orderData.checkoutUrl;
+          }
+        }
+      } catch (err) {
+        console.warn("Server order creation warning:", err);
       }
 
-      // Check if Razorpay script is loaded in window
-      if (typeof window !== "undefined" && (window as any).Razorpay) {
-        const options = {
-          key: orderData.keyId,
-          amount: orderData.amount,
-          currency: orderData.currency,
-          name: "ProfileGlow",
-          description: "AI Dating Coach Unlock",
-          order_id: orderData.orderId,
-          handler: async function (response: any) {
-            const verifyRes = await fetch("/api/payment/verify", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                orderId: response.razorpay_order_id,
-                paymentId: response.razorpay_payment_id,
-                signature: response.razorpay_signature,
-                reportId,
-              }),
-            });
-            if (verifyRes.ok) {
-              onSuccess();
-              onClose();
-            }
-          },
-          theme: {
-            color: "#7c5cff",
-          },
-        };
-
-        const rzp = new (window as any).Razorpay(options);
-        rzp.open();
-      } else {
-        // If script isn't loaded, activate test unlock
-        await handleUnlock(true);
+      // 2. Guaranteed Dodo Payments Checkout Redirect
+      if (!checkoutUrl) {
+        const productId = process.env.NEXT_PUBLIC_DODO_PRODUCT_ID || "pdt_0NqmBhKX5puFCmBYIkOeV";
+        const returnUrl = `${window.location.origin}/report/${reportId}?payment=success&unlocked=true`;
+        checkoutUrl = `https://checkout.dodopayments.com/buy/${productId}?redirect_url=${encodeURIComponent(returnUrl)}&billing_currency=${currency}`;
       }
+
+      // Redirect directly to Dodo Payments checkout
+      window.location.href = checkoutUrl;
+      return;
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Payment process could not be completed.");
