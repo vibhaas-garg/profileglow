@@ -3,7 +3,7 @@ import { GoogleGenAI } from "@google/genai";
 const apiKey = process.env.GEMINI_API_KEY || "";
 export const ai = new GoogleGenAI({ vertexai: false, apiKey });
 
-export const GEMINI_PRIMARY_MODEL = "gemini-3.5-flash";
+export const GEMINI_PRIMARY_MODEL = "gemini-3-flash-preview";
 export const GEMINI_FALLBACK_MODEL = "gemini-3.5-flash-lite";
 
 export const DATING_COACH_SYSTEM_INSTRUCTION = `

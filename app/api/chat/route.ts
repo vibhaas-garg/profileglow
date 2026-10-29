@@ -3,6 +3,7 @@ import { ai, GEMINI_PRIMARY_MODEL, GEMINI_FALLBACK_MODEL, fetchImagePart } from 
 import { adminDb } from "@/lib/firebase/admin";
 import { memoryReports, memoryChat } from "@/lib/store";
 import { ProfileReport } from "@/lib/types";
+import { generateContextualCoachingResponse } from "@/lib/datingCoachEngine";
 
 export const dynamic = "force-dynamic";
 
@@ -193,10 +194,10 @@ When answering general dating advice or profile questions:
           history: formattedHistory,
         });
 
-        // 7.5s timeout race to guarantee response before Netlify function timeout
+        // 14s timeout race to guarantee response before Netlify function timeout
         const sendPromise = chat.sendMessage({ message: messagePayload });
         const timeoutPromise = new Promise<null>((_, reject) =>
-          setTimeout(() => reject(new Error("Gemini timeout")), 7500)
+          setTimeout(() => reject(new Error("Gemini timeout")), 14000)
         );
 
         const result: any = await Promise.race([sendPromise, timeoutPromise]);
@@ -224,36 +225,19 @@ When answering general dating advice or profile questions:
     }
 
     if (!reply) {
-      if (image) {
-        reply = `**Dating App Photo Rating: 7.0 out of 10**
-
-**Critique**
-- **Lighting:** Warm and natural, illuminates your features clearly without harsh shadows.
-- **Eye Contact:** Direct, relaxed, and confident.
-- **Expression:** Genuine micro-smile that conveys warmth and approachable energy.
-- **Outfit:** Clean and fitting well for your target app demographic.
-- **Background Environment:** Solid context that adds lifestyle depth.
-
-**Recommendation:** Supporting Photo (Slot 2 or 3)
-
-**Actionable Tip**
-Try an outdoor shot during golden hour where you're relaxed and smiling authentically to maximize warmth and swipe conversions.`;
-      } else {
-        reply = `**Coach Assessment & Strategy**
-
-Looking at your ${report.inputData.app.toUpperCase()} profile in ${report.inputData.location}, here are high-converting options tailored to your matches:
-
-**Option 1: The Playful Banter**
-"Honestly? I will let you pick the dessert spot, but only if you promise not to judge my playlist on the drive."
-- **Why it works:** Low friction, teases playful vulnerability, and gives them an effortless opening question.
-
-**Option 2: The Fun Debate**
-"Quick debate: is it socially acceptable to order breakfast food for dinner? Your answer decides our first date."
-- **Why it works:** Creates an immediate playful controversy that over 80% of matches reply to.
-
-**Actionable Tip**
-Always reply within 2-4 hours when a match first messages you to keep conversational momentum high while your profile is fresh in their feed.`;
-      }
+      reply = generateContextualCoachingResponse({
+        message: textPrompt,
+        image: image || null,
+        app: report.inputData.app,
+        age: report.inputData.age,
+        location: report.inputData.location,
+        genderPreference: report.inputData.genderPreference,
+        relationshipGoal: report.inputData.relationshipGoal,
+        bio: report.inputData.bio,
+        overallScore: report.overallScore,
+        verdictSummary: report.verdictSummary,
+        bioRewrites: report.bioRewrites,
+      });
     }
 
     const timestamp = new Date().toISOString();
