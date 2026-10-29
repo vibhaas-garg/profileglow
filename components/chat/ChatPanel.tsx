@@ -8,9 +8,11 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Loader2, MessageSquare, Camera, X, RotateCcw } from "lucide-react";
 import { useUsdPrice } from "@/lib/useCurrency";
+import { ProfileReport } from "@/lib/types";
 
 interface ChatPanelProps {
   reportId: string;
+  report?: ProfileReport | null;
   isUnlocked: boolean;
   onUnlocked: () => void;
   initialMessageCount?: number;
@@ -57,6 +59,7 @@ async function compressChatImage(file: File): Promise<string> {
 
 export const ChatPanel: React.FC<ChatPanelProps> = ({
   reportId,
+  report,
   isUnlocked,
   onUnlocked,
   initialMessageCount = 0,
@@ -77,6 +80,34 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   const [quotaCount, setQuotaCount] = useState(initialMessageCount);
   const [showPaywall, setShowPaywall] = useState(false);
   const { usdEquivalent } = useUsdPrice(249);
+
+  // Restore chat messages from localStorage if present
+  useEffect(() => {
+    if (typeof window !== "undefined" && reportId) {
+      const saved = localStorage.getItem(`profileglow_chat_${reportId}`);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setMessages(parsed);
+          }
+        } catch (e) {
+          // ignore
+        }
+      }
+    }
+  }, [reportId]);
+
+  // Save chat messages to localStorage on change
+  useEffect(() => {
+    if (typeof window !== "undefined" && reportId && messages.length > 1) {
+      try {
+        localStorage.setItem(`profileglow_chat_${reportId}`, JSON.stringify(messages));
+      } catch (e) {
+        // ignore
+      }
+    }
+  }, [messages, reportId]);
 
   const messageListRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -153,6 +184,21 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
     setSending(true);
 
     try {
+      const reportContext = report
+        ? {
+            app: report.inputData?.app,
+            age: report.inputData?.age,
+            location: report.inputData?.location,
+            genderPreference: report.inputData?.genderPreference,
+            relationshipGoal: report.inputData?.relationshipGoal,
+            bio: report.inputData?.bio,
+            overallScore: report.overallScore,
+            verdictSummary: report.verdictSummary,
+            bioRewrites: report.bioRewrites,
+            isChatUnlocked: isUnlocked || report.isChatUnlocked,
+          }
+        : undefined;
+
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -160,6 +206,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           reportId,
           message: textToSend,
           image: currentImage,
+          reportContext,
         }),
       });
 
@@ -183,7 +230,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
         ...prev,
         {
           role: "assistant",
-          content: `Error: ${err.message || "Something went wrong. Please try again."}`,
+          content: `**Actionable Tip**\n\nI hit a quick network hiccup while analyzing that. Please click **Send** again and I'll jump right in with your custom profile advice!`,
         },
       ]);
     } finally {

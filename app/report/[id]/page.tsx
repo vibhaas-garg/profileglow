@@ -58,6 +58,22 @@ function ReportContent() {
 
         const res = await fetch(`/api/reports/${reportId}`);
         if (!res.ok) {
+          // Check local storage backup before giving up
+          if (typeof window !== "undefined") {
+            const cached =
+              localStorage.getItem(`profileglow_report_data_${reportId}`) ||
+              localStorage.getItem("profileglow_latest_report_data");
+            if (cached) {
+              try {
+                const cachedData = JSON.parse(cached);
+                setReport(cachedData);
+                setLoading(false);
+                return;
+              } catch (e) {
+                // ignore
+              }
+            }
+          }
           throw new Error("Could not find report.");
         }
         const data = await res.json();
@@ -66,6 +82,8 @@ function ReportContent() {
         // Store latest report locally so returning users can jump straight back to it
         if (typeof window !== "undefined") {
           localStorage.setItem("profileglow_latest_report", reportId);
+          localStorage.setItem(`profileglow_report_data_${reportId}`, JSON.stringify(data));
+          localStorage.setItem("profileglow_latest_report_data", JSON.stringify(data));
         }
 
         trackEvent("report_viewed", {
@@ -314,6 +332,7 @@ function ReportContent() {
         <div id="coaching-chat" className="pt-2 scroll-mt-20 pb-20">
           <ChatPanel
             reportId={report.id}
+            report={report}
             isUnlocked={report.isChatUnlocked}
             onUnlocked={() => {
               setReport({ ...report, isChatUnlocked: true });

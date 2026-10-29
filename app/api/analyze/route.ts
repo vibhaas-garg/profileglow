@@ -230,11 +230,12 @@ Return strictly a JSON object with this exact structure:
     };
 
     // Store in Firestore if available, otherwise memory cache
-    if (adminDb && userId !== "guest_user") {
+    if (adminDb) {
       try {
-        await adminDb.collection("users").doc(userId).collection("reports").doc(reportId).set(fullReport);
-        // Also write to global reports collection for easy retrieval
         await adminDb.collection("reports").doc(reportId).set(fullReport);
+        if (userId !== "guest_user") {
+          await adminDb.collection("users").doc(userId).collection("reports").doc(reportId).set(fullReport);
+        }
       } catch (dbErr) {
         console.warn("Firestore write failed, falling back to memory:", dbErr);
         memoryReports.set(reportId, fullReport);
