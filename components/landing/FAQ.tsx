@@ -6,10 +6,23 @@ import { Badge } from "@/components/ui/Badge";
 export const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const faqs = [
+  const faqs: { q: string; a: React.ReactNode }[] = [
     {
       q: "How does the AI analyze my profile photos and bio?",
-      a: "We use state-of-the-art multimodal vision and dating intelligence AI models. The AI evaluates photo lighting, posture, facial expressions, and composition, alongside your written bio to measure originality, vibe, and conversation potential.",
+      a: (
+        <span>
+          We use multimodal vision and dating intelligence AI models powered by{" "}
+          <a
+            href="https://deepmind.google/technologies/gemini/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-purple font-bold underline"
+          >
+            Google Gemini
+          </a>
+          . The AI evaluates photo lighting, posture, facial expressions, and composition, alongside your written bio to measure originality, vibe, and conversation potential.
+        </span>
+      ),
     },
     {
       q: "Is my personal data and photo upload private?",

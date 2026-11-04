@@ -128,7 +128,7 @@ export const Pricing: React.FC = () => {
               href="/signup"
               className="btn-brutal bg-ink hover:bg-[#2b2b2b] text-white w-full py-3.5 text-center text-sm"
             >
-              Get started free →
+              Unlock AI dating coach →
             </Link>
           </div>
         </div>

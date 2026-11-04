@@ -18,7 +18,11 @@ export const metadata: Metadata = {
     template: "%s | ProfileGlow",
   },
   description:
-    "AI dating profile optimizer for Tinder, Hinge, and Bumble. Upload photos and bio to get an instant makeover report with photo rankings, bio rewrites, and conversation openers.",
+    "AI dating profile optimizer for Tinder, Hinge, and Bumble. Get instant photo rankings, bio rewrites, and proven conversation openers that get dates.",
+  icons: {
+    icon: "/icon",
+    apple: "/apple-touch-icon.png",
+  },
   alternates: {
     canonical: "https://profileglow.tech",
   },

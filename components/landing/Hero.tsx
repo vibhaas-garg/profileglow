@@ -13,8 +13,8 @@ export const Hero: React.FC = () => {
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-[0.95] text-ink">
           <span className="block text-purple text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight mb-3">
             AI Dating Profile Optimizer
-          </span>
-          Stop swiping.
+          </span>{" "}
+          Stop swiping.{" "}
           <br />
           <span className="bg-gradient-to-r from-lime to-lime bg-[length:100%_40%] bg-no-repeat bg-bottom">
             Start matching.
@@ -22,7 +22,7 @@ export const Hero: React.FC = () => {
         </h1>
 
         <p className="text-lg md:text-xl font-medium text-ink/80 max-w-xl leading-relaxed">
-          Optimize your profile for <strong>Tinder, Hinge & Bumble</strong> with multimodal AI. Get rewritten bios, ranked photo orders, and conversation openers engineered for real dates.
+          ProfileGlow is the multimodal <strong>AI dating profile optimizer</strong> engineered to help you stop swiping and start matching on <strong>Tinder, Hinge &amp; Bumble</strong>. Get rewritten bios, ranked photo orders, and conversation openers engineered for real dates.
         </p>
 
         <div className="flex flex-wrap gap-4 pt-2">
@@ -30,13 +30,13 @@ export const Hero: React.FC = () => {
             href="/signup"
             className="btn-brutal bg-purple hover:bg-purple-dark text-white px-7 py-3.5 text-base rounded-2xl shadow-brutal"
           >
-            Get your free score
+            Get your free profile score
           </Link>
           <Link
             href="#pricing"
             className="btn-brutal bg-card hover:bg-[#f0eee8] text-ink px-7 py-3.5 text-base rounded-2xl shadow-brutal"
           >
-            See pricing
+            View pricing plans
           </Link>
         </div>
 

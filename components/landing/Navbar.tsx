@@ -68,7 +68,7 @@ export const Navbar: React.FC = () => {
                 href="/signup"
                 className="pill-brutal bg-lime hover:bg-lime-hover text-ink"
               >
-                Get started ↗
+                Start free audit ↗
               </Link>
             </div>
           )}
