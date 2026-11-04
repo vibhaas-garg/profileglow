@@ -28,6 +28,24 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
+        {/* Dating App Guides */}
+        <div className="border-t border-line pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-black text-ink">
+          <div className="flex items-center gap-2 text-muted">
+            <span>Dating App Guides:</span>
+          </div>
+          <div className="flex flex-wrap justify-center sm:justify-end items-center gap-5 md:gap-6">
+            <Link href="/apps/hinge" className="hover:text-purple transition-colors">
+              Hinge Profile Review
+            </Link>
+            <Link href="/apps/tinder" className="hover:text-purple transition-colors">
+              Tinder Profile Optimizer
+            </Link>
+            <Link href="/apps/bumble" className="hover:text-purple transition-colors">
+              Bumble Bio Ideas
+            </Link>
+          </div>
+        </div>
+
         <div className="border-t border-line pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-extrabold text-muted">
           <div className="flex flex-wrap justify-center sm:justify-start items-center gap-5 md:gap-6">
             <Link href="/privacy" className="hover:text-purple transition-colors">

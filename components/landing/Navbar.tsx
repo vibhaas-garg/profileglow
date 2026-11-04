@@ -15,13 +15,29 @@ export const Navbar: React.FC = () => {
         </Link>
 
         <div className="flex items-center gap-6 font-extrabold text-sm">
-          <Link href="#how" className="hidden md:inline hover:text-purple transition-colors">
+          <Link href="/#how" className="hidden md:inline hover:text-purple transition-colors">
             How it works
           </Link>
-          <Link href="#features" className="hidden md:inline hover:text-purple transition-colors">
+          <Link href="/#features" className="hidden md:inline hover:text-purple transition-colors">
             Features
           </Link>
-          <Link href="#pricing" className="hidden md:inline hover:text-purple transition-colors">
+          <div className="relative group hidden md:block">
+            <span className="hover:text-purple transition-colors cursor-pointer flex items-center gap-1">
+              Guides <span className="text-xs">▾</span>
+            </span>
+            <div className="absolute top-full left-0 mt-2 w-48 bg-card border-2 border-ink rounded-xl shadow-brutal py-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all flex flex-col z-50">
+              <Link href="/apps/hinge" className="px-3.5 py-2 hover:bg-lime text-xs font-black text-ink">
+                Hinge Profile Review
+              </Link>
+              <Link href="/apps/tinder" className="px-3.5 py-2 hover:bg-lime text-xs font-black text-ink">
+                Tinder Optimizer
+              </Link>
+              <Link href="/apps/bumble" className="px-3.5 py-2 hover:bg-lime text-xs font-black text-ink">
+                Bumble Bio Ideas
+              </Link>
+            </div>
+          </div>
+          <Link href="/#pricing" className="hidden md:inline hover:text-purple transition-colors">
             Pricing
           </Link>
 
