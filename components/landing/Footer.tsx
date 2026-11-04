@@ -46,6 +46,27 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
+        {/* Alternatives & Comparisons */}
+        <div className="border-t border-line pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-black text-ink">
+          <div className="flex items-center gap-2 text-muted">
+            <span>Alternatives:</span>
+          </div>
+          <div className="flex flex-wrap justify-center sm:justify-end items-center gap-5 md:gap-6">
+            <Link href="/alternatives/photofeeler" className="hover:text-purple transition-colors">
+              PhotoFeeler Alternative
+            </Link>
+            <Link href="/alternatives/roast" className="hover:text-purple transition-colors">
+              ROAST Alternative
+            </Link>
+            <Link href="/alternatives/yourmove" className="hover:text-purple transition-colors">
+              YourMove AI Alternative
+            </Link>
+            <Link href="/alternatives/tinder-boost" className="hover:text-purple transition-colors">
+              Tinder Boost Alternative
+            </Link>
+          </div>
+        </div>
+
         <div className="border-t border-line pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-extrabold text-muted">
           <div className="flex flex-wrap justify-center sm:justify-start items-center gap-5 md:gap-6">
             <Link href="/privacy" className="hover:text-purple transition-colors">

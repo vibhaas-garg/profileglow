@@ -37,6 +37,25 @@ export const Navbar: React.FC = () => {
               </Link>
             </div>
           </div>
+          <div className="relative group hidden md:block">
+            <span className="hover:text-purple transition-colors cursor-pointer flex items-center gap-1">
+              Alternatives <span className="text-xs">▾</span>
+            </span>
+            <div className="absolute top-full left-0 mt-2 w-52 bg-card border-2 border-ink rounded-xl shadow-brutal py-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all flex flex-col z-50">
+              <Link href="/alternatives/photofeeler" className="px-3.5 py-2 hover:bg-lime text-xs font-black text-ink">
+                PhotoFeeler Alternative
+              </Link>
+              <Link href="/alternatives/roast" className="px-3.5 py-2 hover:bg-lime text-xs font-black text-ink">
+                ROAST Alternative
+              </Link>
+              <Link href="/alternatives/yourmove" className="px-3.5 py-2 hover:bg-lime text-xs font-black text-ink">
+                YourMove AI Alternative
+              </Link>
+              <Link href="/alternatives/tinder-boost" className="px-3.5 py-2 hover:bg-lime text-xs font-black text-ink">
+                Tinder Boost Alternative
+              </Link>
+            </div>
+          </div>
           <Link href="/#pricing" className="hidden md:inline hover:text-purple transition-colors">
             Pricing
           </Link>
