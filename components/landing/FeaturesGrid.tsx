@@ -60,11 +60,11 @@ export const FeaturesGrid: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
-            <Badge variant="purple">WHAT YOU GET</Badge>
+            <Badge variant="purple">FEATURES</Badge>
             <h2 className="text-4xl md:text-5xl font-black tracking-tight text-ink mt-3">
-              Everything to
+              Everything you need for
               <br />
-              stand out.
+              a 10/10 dating profile.
             </h2>
           </div>
           <p className="max-w-md font-medium text-muted text-base">

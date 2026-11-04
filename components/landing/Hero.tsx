@@ -8,9 +8,12 @@ export const Hero: React.FC = () => {
   return (
     <section className="max-w-6xl mx-auto px-4 py-14 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
       <div className="lg:col-span-7 space-y-6">
-        <Badge variant="pink">DATING PROFILE AUDIT & MAKEOVER</Badge>
+        <Badge variant="pink">TINDER, HINGE & BUMBLE AUDIT</Badge>
 
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-[0.95] text-ink">
+          <span className="block text-purple text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight mb-3">
+            AI Dating Profile Optimizer
+          </span>
           Stop swiping.
           <br />
           <span className="bg-gradient-to-r from-lime to-lime bg-[length:100%_40%] bg-no-repeat bg-bottom">
@@ -19,7 +22,7 @@ export const Hero: React.FC = () => {
         </h1>
 
         <p className="text-lg md:text-xl font-medium text-ink/80 max-w-xl leading-relaxed">
-          Upload your dating profile photos and bio. Get an instant profile makeover report: rewritten bios, photo order rankings, and openers that actually get replies.
+          Optimize your profile for <strong>Tinder, Hinge & Bumble</strong> with multimodal AI. Get rewritten bios, ranked photo orders, and conversation openers engineered for real dates.
         </p>
 
         <div className="flex flex-wrap gap-4 pt-2">

@@ -1,4 +1,14 @@
+import type { Metadata } from "next";
 import { AuthCard } from "@/components/auth/AuthCard";
+
+export const metadata: Metadata = {
+  title: "Create Account",
+  description: "Create a free ProfileGlow account to get your instant AI dating profile makeover score.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function SignupPage() {
   return (

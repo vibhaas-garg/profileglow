@@ -14,11 +14,11 @@ export const Pricing: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
-            <Badge variant="purple">THE OFFER</Badge>
+            <Badge variant="purple">PRICING PLANS</Badge>
             <h2 className="text-4xl md:text-5xl font-black tracking-tight text-ink mt-3">
-              Less than a coffee.
+              Free profile audit.
               <br />
-              More matches.
+              Affordable AI coaching.
             </h2>
           </div>
           <p className="max-w-md font-medium text-muted text-base">

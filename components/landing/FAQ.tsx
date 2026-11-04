@@ -32,9 +32,9 @@ export const FAQ: React.FC = () => {
   return (
     <section className="max-w-4xl mx-auto px-4 py-20">
       <div className="text-center mb-12">
-        <Badge variant="purple">GOOD QUESTIONS</Badge>
+        <Badge variant="purple">FREQUENTLY ASKED QUESTIONS</Badge>
         <h2 className="text-4xl md:text-5xl font-black tracking-tight text-ink mt-3">
-          Before you glow up.
+          Frequently asked questions about ProfileGlow.
         </h2>
       </div>
 

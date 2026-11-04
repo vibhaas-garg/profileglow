@@ -12,25 +12,31 @@ const inter = Inter({
 const GA_ID = process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "G-KGW87C9PCH";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://profileglow.tech"),
-  title: "ProfileGlow: Dating Profile Optimization",
+  metadataBase: new URL("https://www.profileglow.tech"),
+  title: {
+    default: "ProfileGlow: AI Dating Profile Optimizer & Audit",
+    template: "%s | ProfileGlow",
+  },
   description:
-    "Upload your dating profile photos and bio to get a complete makeover report with rewritten bios, photo rankings, and conversation openers.",
+    "AI dating profile optimizer for Tinder, Hinge, and Bumble. Upload photos and bio to get an instant makeover report with photo rankings, bio rewrites, and conversation openers.",
+  alternates: {
+    canonical: "https://www.profileglow.tech",
+  },
   verification: {
     google: "GcBRaC6lh3pDGXBrzPzfvaarwG36lHIy94WnH",
   },
   openGraph: {
-    title: "ProfileGlow: AI Dating Profile Doctor",
+    title: "ProfileGlow: AI Dating Profile Optimizer (Tinder, Hinge, Bumble)",
     description:
-      "Get an evidence-based audit for Hinge, Bumble, and Tinder. Photo critiques, bio rewrites, and conversation openers.",
-    url: "https://profileglow.tech",
+      "AI-powered dating profile audit, photo rankings, bio rewrites, and conversation openers engineered for more quality matches on Tinder, Hinge, and Bumble.",
+    url: "https://www.profileglow.tech",
     siteName: "ProfileGlow",
     images: [
       {
         url: "/og-default.png",
         width: 1200,
         height: 630,
-        alt: "ProfileGlow Dating Profile Optimization",
+        alt: "ProfileGlow AI Dating Profile Optimizer",
       },
     ],
     locale: "en_US",
@@ -38,9 +44,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ProfileGlow: AI Dating Profile Doctor",
+    title: "ProfileGlow: AI Dating Profile Optimizer (Tinder, Hinge, Bumble)",
     description:
-      "Get an evidence-based audit for Hinge, Bumble, and Tinder. Photo critiques, bio rewrites, and conversation openers.",
+      "AI-powered dating profile audit, photo rankings, bio rewrites, and conversation openers engineered for more quality matches on Tinder, Hinge, and Bumble.",
+    images: ["/og-default.png"],
   },
 };
 
@@ -51,7 +58,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <head>
+      <body className={`${inter.className} antialiased`}>
         {/* Google Analytics Tracking */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
@@ -77,8 +84,6 @@ export default function RootLayout({
             })(window, document, "clarity", "script", "z68nij6rnd");
           `}
         </Script>
-      </head>
-      <body className={`${inter.className} antialiased`}>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

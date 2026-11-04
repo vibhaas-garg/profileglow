@@ -24,11 +24,11 @@ export const HowItWorks: React.FC = () => {
     <section id="how" className="max-w-6xl mx-auto px-4 py-20">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
         <div>
-          <Badge variant="purple">THE PROCESS</Badge>
+          <Badge variant="purple">HOW IT WORKS</Badge>
           <h2 className="text-4xl md:text-5xl font-black tracking-tight text-ink mt-3">
-            Three steps.
+            Three steps to an
             <br />
-            One glow-up.
+            AI profile makeover.
           </h2>
         </div>
         <p className="max-w-md font-medium text-muted text-base">

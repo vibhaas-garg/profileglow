@@ -1,26 +1,60 @@
 import React from "react";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { ArrowLeft, FileText, CheckCircle2, AlertTriangle, CreditCard, Scale, Mail } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
 
-export const metadata = {
-  title: "Terms of Service | ProfileGlow",
+export const metadata: Metadata = {
+  title: "Terms of Service",
   description: "Terms and conditions governing the use of ProfileGlow AI dating optimization services.",
+  alternates: {
+    canonical: "https://www.profileglow.tech/terms",
+  },
+};
+
+const breadcrumbsJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.profileglow.tech",
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Terms of Service",
+      "item": "https://www.profileglow.tech/terms",
+    },
+  ],
 };
 
 export default function TermsPage() {
   return (
     <div className="min-h-screen flex flex-col bg-bg text-ink">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsJsonLd) }}
+      />
       <Navbar />
       <main className="flex-1 max-w-4xl mx-auto px-4 py-12 md:py-16">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 font-black text-sm text-purple hover:underline mb-8"
-        >
-          <ArrowLeft className="w-4 h-4 stroke-[3]" /> Back to Home
-        </Link>
+        <nav aria-label="Breadcrumb" className="mb-8">
+          <ol className="flex items-center gap-2 text-sm font-bold text-muted">
+            <li>
+              <Link href="/" className="hover:text-purple transition-colors inline-flex items-center gap-1">
+                <ArrowLeft className="w-4 h-4 stroke-[3]" /> Home
+              </Link>
+            </li>
+            <li>/</li>
+            <li className="text-ink" aria-current="page">
+              Terms of Service
+            </li>
+          </ol>
+        </nav>
 
         <div className="space-y-4 mb-10">
           <Badge variant="lime">LEGAL TERMS</Badge>
