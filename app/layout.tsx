@@ -12,7 +12,7 @@ const inter = Inter({
 const GA_ID = process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "G-KGW87C9PCH";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.profileglow.tech"),
+  metadataBase: new URL("https://profileglow.tech"),
   title: {
     default: "ProfileGlow: AI Dating Profile Optimizer & Audit",
     template: "%s | ProfileGlow",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description:
     "AI dating profile optimizer for Tinder, Hinge, and Bumble. Upload photos and bio to get an instant makeover report with photo rankings, bio rewrites, and conversation openers.",
   alternates: {
-    canonical: "https://www.profileglow.tech",
+    canonical: "https://profileglow.tech",
   },
   verification: {
     google: "GcBRaC6lh3pDGXBrzPzfvaarwG36lHIy94WnH",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title: "ProfileGlow: AI Dating Profile Optimizer (Tinder, Hinge, Bumble)",
     description:
       "AI-powered dating profile audit, photo rankings, bio rewrites, and conversation openers engineered for more quality matches on Tinder, Hinge, and Bumble.",
-    url: "https://www.profileglow.tech",
+    url: "https://profileglow.tech",
     siteName: "ProfileGlow",
     images: [
       {

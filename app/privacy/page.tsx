@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy",
   description: "Learn how ProfileGlow handles and protects your dating photos, bios, and personal data.",
   alternates: {
-    canonical: "https://www.profileglow.tech/privacy",
+    canonical: "https://profileglow.tech/privacy",
   },
 };
 
@@ -22,13 +22,13 @@ const breadcrumbsJsonLd = {
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://www.profileglow.tech",
+      "item": "https://profileglow.tech",
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Privacy Policy",
-      "item": "https://www.profileglow.tech/privacy",
+      "item": "https://profileglow.tech/privacy",
     },
   ],
 };

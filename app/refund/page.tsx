@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Refund & Cancellation Policy",
   description: "7-day money-back satisfaction guarantee and refund terms for ProfileGlow.",
   alternates: {
-    canonical: "https://www.profileglow.tech/refund",
+    canonical: "https://profileglow.tech/refund",
   },
 };
 
@@ -22,13 +22,13 @@ const breadcrumbsJsonLd = {
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://www.profileglow.tech",
+      "item": "https://profileglow.tech",
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Refund Policy",
-      "item": "https://www.profileglow.tech/refund",
+      "item": "https://profileglow.tech/refund",
     },
   ],
 };

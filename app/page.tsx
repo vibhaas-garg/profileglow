@@ -17,7 +17,7 @@ const jsonLd = {
       "name": "ProfileGlow",
       "operatingSystem": "All",
       "applicationCategory": "LifestyleApplication",
-      "url": "https://www.profileglow.tech",
+      "url": "https://profileglow.tech",
       "description":
         "AI dating profile optimizer for Tinder, Hinge, and Bumble. Get instant multimodal vision audits, photo order rankings, bio rewrites, and conversation openers.",
       "offers": [

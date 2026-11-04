@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Terms of Service",
   description: "Terms and conditions governing the use of ProfileGlow AI dating optimization services.",
   alternates: {
-    canonical: "https://www.profileglow.tech/terms",
+    canonical: "https://profileglow.tech/terms",
   },
 };
 
@@ -22,13 +22,13 @@ const breadcrumbsJsonLd = {
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://www.profileglow.tech",
+      "item": "https://profileglow.tech",
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Terms of Service",
-      "item": "https://www.profileglow.tech/terms",
+      "item": "https://profileglow.tech/terms",
     },
   ],
 };
